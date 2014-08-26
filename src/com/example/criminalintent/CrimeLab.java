@@ -25,6 +25,7 @@ public class CrimeLab {
 	public ArrayList<Crime> getCrimes() {
 		return mCrimes;
 	}
+	
 	public Crime getCrime(UUID id) {
 		for (Crime c : mCrimes) {
 			if (c.getId().equals(id))
