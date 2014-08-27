@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,8 +94,7 @@ public class CrimeFragment extends Fragment {
 			public void onClick(View v) {
 				FragmentManager fm = getActivity()
 						.getSupportFragmentManager();
-				TimePickerFragment dialog = TimePickerFragment
-						.newInstance(mCrime.getDate());
+				TimePickerFragment dialog = TimePickerFragment.newInstance(mCrime.getDate());
 				dialog.setTargetFragment(CrimeFragment.this, REQUEST_TIME);
 				dialog.show(fm, DIALOG_TIME);
 			} });
@@ -120,6 +120,15 @@ public class CrimeFragment extends Fragment {
 			mCrime.setDate(date);
 			updateDate();
 		}
+		
+		if (requestCode == REQUEST_TIME) {
+			Log.d("YOYO", "HELLO");
+	        Date date = (Date)data
+	            .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+	        Log.d("date", date.toString());
+	        mCrime.setDate(date);
+	        updateTime();
+	    }
 	}
 
 	private void updateDate() {
