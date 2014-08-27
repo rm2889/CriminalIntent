@@ -3,6 +3,9 @@ package com.example.criminalintent;
 import java.util.Date;
 import java.util.UUID;
 
+import android.text.format.Time;
+import android.util.Log;
+
 public class Crime {
 	private UUID mId;
 	private String mTitle;
@@ -20,6 +23,7 @@ public class Crime {
 	public void setDate(Date date) {
 		mDate = date;
 	}
+		
 	public boolean isSolved() {
 		return mSolved;
 	}

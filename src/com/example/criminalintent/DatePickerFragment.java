@@ -20,6 +20,7 @@ public class DatePickerFragment extends DialogFragment {
 			"com.bignerdranch.android.criminalintent.date";
 
 	private Date mDate;
+	
 	public static DatePickerFragment newInstance(Date date) {
 		Bundle args = new Bundle();
 		args.putSerializable(EXTRA_DATE, date);
