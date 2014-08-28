@@ -8,11 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.NavUtils;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,7 +29,7 @@ public class CrimeFragment extends Fragment {
 			"com.bignerdranch.android.criminalintent.crime_id";
 	private static final String DIALOG_DATE = "date";
 	private static final String DIALOG_TIME = "time";
-	
+
 	private static final int REQUEST_DATE = 0;
 	private static final int REQUEST_TIME = 1;
 
@@ -48,7 +50,8 @@ public class CrimeFragment extends Fragment {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);		
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 		UUID crimeId = (UUID)getArguments().getSerializable(EXTRA_CRIME_ID);
 		mCrime = CrimeLab.get(getActivity()).getCrime(crimeId);
 	}
@@ -57,6 +60,11 @@ public class CrimeFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup parent,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.fragment_crime, parent, false);
+
+		if (NavUtils.getParentActivityName(getActivity()) != null) {
+			getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+
 		mTitleField = (EditText)v.findViewById(R.id.crime_title);
 		mTitleField.setText(mCrime.getTitle());
 
@@ -89,7 +97,7 @@ public class CrimeFragment extends Fragment {
 				dialog.setTargetFragment(CrimeFragment.this, REQUEST_DATE);
 				dialog.show(fm, DIALOG_DATE);
 			} });
-		
+
 		mTimeButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				FragmentManager fm = getActivity()
@@ -120,15 +128,28 @@ public class CrimeFragment extends Fragment {
 			mCrime.setDate(date);
 			updateDate();
 		}
-		
+
 		if (requestCode == REQUEST_TIME) {
 			Log.d("YOYO", "HELLO");
-	        Date date = (Date)data
-	            .getSerializableExtra(TimePickerFragment.EXTRA_TIME);
-	        Log.d("date", date.toString());
-	        mCrime.setDate(date);
-	        updateTime();
-	    }
+			Date date = (Date)data
+					.getSerializableExtra(TimePickerFragment.EXTRA_TIME);
+			Log.d("date", date.toString());
+			mCrime.setDate(date);
+			updateTime();
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			if (NavUtils.getParentActivityName(getActivity()) != null) {
+				NavUtils.navigateUpFromSameTask(getActivity());
+			}
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		} 
 	}
 
 	private void updateDate() {
