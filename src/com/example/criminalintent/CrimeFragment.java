@@ -14,6 +14,8 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -124,6 +126,13 @@ public class CrimeFragment extends Fragment {
 		super.onPause();
 		CrimeLab.get(getActivity()).saveCrimes();
 	}
+	
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+	    super.onCreateOptionsMenu(menu, inflater);
+	    inflater.inflate(R.menu.fragment_single_crime, menu);
+	}
+			
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -151,7 +160,11 @@ public class CrimeFragment extends Fragment {
 		case android.R.id.home:
 			if (NavUtils.getParentActivityName(getActivity()) != null) {
 				NavUtils.navigateUpFromSameTask(getActivity());
-			}
+			}			
+			return true;
+		case R.id.menu_item_delete_crime:
+			CrimeLab.get(getActivity()).deleteCrime(mCrime);
+			NavUtils.navigateUpFromSameTask(getActivity());
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
