@@ -8,6 +8,9 @@ import org.json.JSONObject;
 
 public class Crime {
 
+	private static final String JSON_SUSPECT = "suspect";
+	private String mSuspect;
+
 	private static final String JSON_ID = "id";
 	private static final String JSON_TITLE = "title";
 	private static final String JSON_SOLVED = "solved";
@@ -31,6 +34,8 @@ public class Crime {
 		}
 		mSolved = json.getBoolean(JSON_SOLVED);
 		mDate = new Date(json.getLong(JSON_DATE));
+		if (json.has(JSON_SUSPECT))
+			mSuspect = json.getString(JSON_SUSPECT);
 	}
 
 	public JSONObject toJSON() throws JSONException {
@@ -39,8 +44,20 @@ public class Crime {
 		json.put(JSON_TITLE, mTitle);
 		json.put(JSON_SOLVED, mSolved);
 		json.put(JSON_DATE, mDate.getTime());
+		
+		if (mSuspect != null) {
+            json.put(JSON_SUSPECT, mSuspect);
+		}
+		
 		return json;
 	}
+	
+	public String getSuspect() {
+        return mSuspect;
+    }
+    public void setSuspect(String suspect) {
+        mSuspect = suspect;
+    }
 
 	public Date getDate() {
 		return mDate;
